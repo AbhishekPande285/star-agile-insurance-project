@@ -65,4 +65,33 @@ pipeline {
             }
         }
     }
+
+    post {
+        success {
+            emailext (
+                subject: "SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """
+                <p>🎉 <strong>Build Successful!</strong></p>
+                <p><strong>Job:</strong> ${env.JOB_NAME}</p>
+                <p><strong>Build Number:</strong> ${env.BUILD_NUMBER}</p>
+                <p>🔗 <a href="${env.BUILD_URL}">Click here to view build logs</a></p>
+                """,
+                to: 'abhipande285@gmail.com',
+                mimeType: 'text/html'
+            )
+        }
+        failure {
+            emailext (
+                subject: "FAILURE: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """
+                <p>❌ <strong>Build Failed!</strong></p>
+                <p><strong>Job:</strong> ${env.JOB_NAME}</p>
+                <p><strong>Build Number:</strong> ${env.BUILD_NUMBER}</p>
+                <p>🔗 <a href="${env.BUILD_URL}">Click here to view build logs</a></p>
+                """,
+                to: 'abhipande285@gmail.com',
+                mimeType: 'text/html'
+            )
+        }
+    }
 }
